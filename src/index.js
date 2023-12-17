@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
@@ -22,7 +12,7 @@ app.use(
 );
 app.use(express.static("public"));
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 const createDots = require("./dots").createDots;
 const dellDot = require("./dots").dellDot;
@@ -48,6 +38,10 @@ let touchCords;
 io.on("connection", (socket) => {
     console.log("New client connected", socket.id);
 
+    socket.on("ping", function (data) {
+        socket.emit("pong", data);
+    });
+
     socket.on("new player", () => {
         getPlayers(players, socket);
         // dots = createDots(15, "green", num, 1000);
@@ -60,9 +54,7 @@ io.on("connection", (socket) => {
         speed = velocityForm/10
         size = mapSize
         socket.emit("players arr", { players, dots, size });
-        setInterval(() => {
-            playerMoveLoop(players, io);
-        }, 1000 / FPS);
+
     });
 
     socket.on("movement", (touchCords) =>
@@ -91,11 +83,19 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log(`player ${socket.id} disconnected`);
         delete players[socket.id];
+        if(Object.entries(players).length === 0){
+            dots = {}
+        }
     });
 
     setInterval(() => {
         socket.emit("visibleDots", dots);
     }, 100);
 });
+setInterval(() => {
+    playerMoveLoop(players, io);
+}, 1000 / FPS);
+
+
 
 

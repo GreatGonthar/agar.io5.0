@@ -11,6 +11,7 @@ class Dot {
 }
 
 module.exports.createDots = (r, color, n, oreal) => {
+    dots = {}
     for (let i = 0; i < n; i++) {
         let x = Math.floor(Math.random() * oreal);
         let y = Math.floor(Math.random() * oreal);
@@ -19,6 +20,7 @@ module.exports.createDots = (r, color, n, oreal) => {
         let dot = new Dot(id, x, y, r, color);
         dots[id] = dot;
     }
+    console.log("dots: ", Object.entries(dots).length)
     return dots;
 };
 

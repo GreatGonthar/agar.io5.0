@@ -20,7 +20,7 @@ body {
     align-items: center;
     background-color: black;
 }
-#stroke_state {
+.stroke_state {
     font-family: "Emulogic", sans-serif;
     font-size: 5px;
     margin: 5px;    

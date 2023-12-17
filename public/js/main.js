@@ -22,8 +22,10 @@ import { formLogic } from "./formLogic.js";
 // });
 const socket = io();
 let mapSize = 0;
+let ping = 0
 const canvas = document.getElementById("canvas");
 let strokeState = document.getElementById("stroke_state");
+let strokeState2 = document.getElementById("stroke_state2");
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
 canvas.style.backgroundImage =
@@ -35,6 +37,8 @@ let translateX = 0;
 let translateY = 0;
 let userDots = {};
 let dotsCountOnScreen = 0;
+
+
 
 console.log(`player connection`, socket);
 socket.emit("new player");
@@ -70,6 +74,8 @@ socket.on("loop", (players) => {
         textOutput(
             player,
             strokeState,
+            strokeState2,
+            ping,
             dotsCountOnScreen,
             Object.keys(players).length
         );
@@ -127,4 +133,8 @@ const touchListener = (obj, movement, socket) => {
     });
 };
 
+socket.on("pong", function (data) {
+    ping = Date.now() - data;    
+});
+setInterval(()=> {socket.emit('ping', Date.now())}, 500)
 touchListener(canvas, movement, socket);

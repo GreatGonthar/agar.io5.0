@@ -2,18 +2,19 @@ import { WIDTH, HEIGHT } from "./consts.js";
 
 let s = 1;
 
-export const textOutput = (player, element, dotsCountOnScreen, playersNum) => {
+export const textOutput = (player, strokeState, strokeState2, ping, dotsCountOnScreen, playersNum) => {
     let name = player.id[0] + player.id[1] + player.id[2];
     let cords = {
         x: Math.floor(player.positionX),
         y: Math.floor(player.positionY),
     };
 
-    element.innerText = `name: ${name}, x: ${cords.x}, y: ${
+    strokeState.innerText = `name: ${name}, x: ${cords.x}, y: ${
         cords.y
     }, players: ${playersNum}, velocity: ${(player.velocity * 1000).toFixed(
         2
     )}, r: ${player.r.toFixed(2)}`;
+    strokeState2.innerText = `ping: ${ping}`
 };
 
 export const playerCollision = (myPlayer, players, id, socket) => {
